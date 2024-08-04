@@ -17,7 +17,7 @@ def auto_sphere(image_file):
     return fig
 
 if __name__ == "__main__":
-    image_file = r"C:\Users\Admin\Desktop\extensiontask\bluemarble.jpg"
+    image_file = r"C:\Users\Kshit\Desktop\extensiontask\bluemarble.jpg"
     fig = auto_sphere(image_file)
     
     print("Input Start Location Vector: ")
