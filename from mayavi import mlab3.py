@@ -1,22 +1,33 @@
 from mayavi import mlab
+from PIL import Image
 from tvtk.api import tvtk
 
 def auto_sphere(image_file):
-    fig = mlab.figure(size=(600, 600))
-    img = tvtk.JPEGReader()
-    img.file_name = image_file
-    img.update()  # Ensure the image is read
-    
-    texture = tvtk.Texture(input_connection=img.output_port, interpolate=1)
-    
-    sphere = tvtk.SphereSource(radius=2, theta_resolution=100, phi_resolution=100)
-    sphere_mapper = tvtk.PolyDataMapper(input_connection=sphere.output_port)
-    sphere_actor = tvtk.Actor(mapper=sphere_mapper, texture=texture)
-    
-    fig.scene.add_actor(sphere_actor)
-    return fig
+    try:
+        print(f"Reading image file from: {image_file}")
 
-if __name__ == "__main__":
+        with Image.open(image_file) as img:
+            img.show()
+
+        fig = mlab.figure(size=(600, 600)) #   tvtk and mayavi
+        img = tvtk.JPEGReader()
+        img.file_name = image_file
+        img.update()  # Ensure the image is read
+
+        texture = tvtk.Texture(input_connection=img.output_port, interpolate=1)
+
+        sphere = tvtk.SphereSource(radius=2, theta_resolution=100, phi_resolution=100)
+        sphere_mapper = tvtk.PolyDataMapper(input_connection=sphere.output_port)
+        sphere_actor = tvtk.Actor(mapper=sphere_mapper, texture=texture)
+
+        fig.scene.add_actor(sphere_actor)
+        return fig
+    
+    except Exception as e:
+        print(f"Error reading image file: {e}")
+        return None
+
+if __name__ == "__main__":  
     image_file = r"C:\Users\Kshit\Desktop\extensiontask\bluemarble.jpg"
     fig = auto_sphere(image_file)
     
